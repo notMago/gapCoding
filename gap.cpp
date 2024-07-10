@@ -13,17 +13,6 @@
 using namespace std;
 using namespace std::chrono;
 
-//----------------SOLO PARA IMPRIMIR EL HUFFMANCODE----------------------
-template<typename T>
-void printHuffmanCodes(const map<T, string>& huffmanCodes) {
-    cout << "Codigos de Huffman: " << endl;
-    for (const auto& pair : huffmanCodes) {
-        cout << pair.first << ": " << pair.second << endl;
-    }
-}
-
-//-----------------SOLO PARA IMPRIMIR EL HUFFMANCODE----------------
-
 size_t getCurrentRSS() {
     // Tomar el PID del proceso actual
     pid_t pid = getpid();
@@ -304,17 +293,6 @@ int main(int argc, char* argv[]) {
     double* normalArray = new double[size];
     generateNormalArray(normalArray, size, 0.0, 1.0);
 
-    /**
-    //Imprimir los arreglos generados
-    cout << "Arreglo con distribucion lineal:\t";
-    printArr(linearArray, size);
-
-    cout << "Arreglo con distribucion normal:\t";
-    printArr(normalArray, size);
-    
-    cout << "----------------------------------------------------" << endl << endl;
-     */
-
     //SIN HUFFMAN
     // Búsqueda binaria en el arreglo lineal
     int keyInt = linearArray[size / 2];
@@ -344,16 +322,12 @@ int main(int argc, char* argv[]) {
     cout << "Arreglo lineal codificado con gap coding. "<<endl;
     cout << "Arreglo normal codificado con gap coding. "<<endl;
     /**printArr(gapCodedLinearArray, size);
-
-    
     printArr(gapCodedNormalArray, size);
-
     cout << "----------------------------------------------------" << endl;
     */
 
     // Generar la estructura sample para ambos arreglos
     int m = log2(size);
-    //int m = size / b;
     int* sampleLinearArray = new int[m];
     double* sampleNormalArray = new double[m];
 
@@ -384,11 +358,6 @@ int main(int argc, char* argv[]) {
     HuffmanNode* huffmanTreeInt = measureHuffmanTreeConstruction<int>(freqInt);
     cout << "Double:\n ";
     HuffmanNode* huffmanTreeDouble = measureHuffmanTreeConstruction<double>(freqDouble);
-
-    // Construir los árboles de Huffman para ambos arreglos
-    //HuffmanNode* huffmanTreeInt = buildHuffmanTree(freqInt);
-    //HuffmanNode* huffmanTreeDouble = buildHuffmanTree(freqDouble);
-
     
     // Generar los códigos de Huffman para ambos árboles
     map<int, string> huffmanCodesInt;
@@ -407,31 +376,13 @@ int main(int argc, char* argv[]) {
     gapCoding(normalArray, size, gapCodedDouble);
     cout << "Arreglo con codificacion de gaps (double):" << endl;
     printArrGAP(gapCodedDouble, size);
-
-
     cout << "----------------------------------------------------"<< endl;
-    // Estructuras sample
-    //int m = size / b;
-    //int m = rand() % size; // Primer valor aleatorio
+
     int* sampleInt = new int[m];
     generateSample(linearArray, size, sampleInt, m);
 
     double* sampleDouble = new double[m];
     generateSample(normalArray, size, sampleDouble, m);
-
-    // Medir tiempos de búsqueda
-    measureBinarySearch(linearArray, size, 50);
-    measureGapCodedBinarySearch(sampleInt, gapCodedInt, size, 50, b);
-
-    // Medir tiempos de construcción y codificación de Huffman
-    //measureHuffmanTreeConstruction(freqInt);
-    //measureHuffmanTreeConstruction(freqDouble);
-
-
-    //-------------SOLO PARA VERIFICAR EL HUFFMANCODE------------------------
-    //printHuffmanCodes(huffmanCodesInt);
-    //printHuffmanCodes(huffmanCodesDouble);
-    //------------SOLO PARA VERIFICAR EL HUFFMANCODE---------------------------
 
     measureHuffmanEncoding(linearArray, size, huffmanCodesInt);
     measureHuffmanEncoding(normalArray, size, huffmanCodesDouble);
